@@ -1,10 +1,12 @@
 import os
 import shutil
 import datetime
+import schedule
+import time
 
 #List of directories from where you want to backup
 source_dirs = []#Fill the list with the paths pf the directories or folders you want to backup
-#eg: source_dirs = ['/storage/emulated/0/Documents/Text Editor','/storage/emulated/0/New folder','/storage/emulated/0/Download/Cam Scanner']
+#eg:source_dirs = ['/storage/emulated/0/Documents/Text Editor','/storage/emulated/0/New folder','/storage/emulated/0/Download/Cam Scanner']
 
 #Directory where the backup data to be storef
 destination_dir = ''#Path of the directory or folder where you want to backup
@@ -37,4 +39,11 @@ def copy_folder_to(source,dest):
 		except OSError:
 			print('Invalid Directory or its properties')
 
-copy_folder_to(source_dirs,destination_dir)
+schedule.every().day.at('18:17').do(lambda :copy_folder_to(source_dirs,destination_dir))
+#do() accepts a function as an argument.provided lambda function to meet the needful
+#Time must be in 24 hour format
+
+while True:
+	schedule.run_pending()
+	time.sleep(60)
+			      
